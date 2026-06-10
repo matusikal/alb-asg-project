@@ -63,7 +63,7 @@ After some time panel from cloudwatch shows number of instance running and cpu u
 
 ## Architecture decisions
 
-**t3.nano used** For maximum cost savings I used the cheapest option available on aws. It gets the job done and for the whole month of running is costs only 4$. 
+**t3.nano used** For maximum cost savings I used the cheapest option available on aws. It gets the job done and for the whole month of running it costs only 4$. I thought about spot instances but do not want random interruptions as well as reserved savings plan, if I ever need to clear this project.
 
 **No CloudFront.** CloudFront would cache content at the edge and hide the multi-AZ load balancing behavior this project is designed to demonstrate. Watching the server IP rotate across availability zones on refresh is the point.
 
