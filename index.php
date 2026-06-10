@@ -43,31 +43,44 @@ if (isset($_POST['stress'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AWS Auto Scaling & ALB Demo</title>
+    <title>AWS Auto Scaling & ELB Demo</title>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #0f172a; color: #f8fafc; text-align: center; padding: 50px; }
-        .card { background: #1e293b; padding: 40px; border-radius: 12px; display: inline-block; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); max-width: 500px; text-align: center; }
+        .container { display: flex; flex-direction: column; align-items: center; gap: 30px; max-width: 1000px; margin: 0 auto; }
+        .card { background: #1e293b; padding: 40px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); width: 100%; max-width: 500px; text-align: center; }
         h1 { color: #38bdf8; margin-bottom: 5px; }
         .ip-box { background: #334155; padding: 20px; border-radius: 8px; margin: 20px 0; font-size: 1.1em; text-align: left; line-height: 1.6; }
         .btn { background: #ef4444; color: white; border: none; padding: 14px 28px; font-size: 16px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; }
         .btn:hover { background: #dc2626; transform: scale(1.02); }
         .alert { background: #1e3a8a; border: 1px solid #3b82f6; color: #93c5fd; padding: 15px; border-radius: 6px; margin-top: 20px; font-weight: 500; text-align: left; }
         code { background: #0f172a; padding: 2px 6px; border-radius: 4px; color: #f43f5e; font-family: monospace; }
+        
+        /* 📈 Custom Dashboard Layout Styles */
+        .dashboard-panel { background: #1e293b; width: 100%; max-width: 950px; border-radius: 12px; padding: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
+        .dashboard-title { color: #38bdf8; text-align: left; margin-bottom: 15px; font-size: 1.2rem; font-weight: bold; }
+        iframe { width: 100%; height: 500px; border: none; border-radius: 8px; background: #111; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>AWS Scalability Demo</h1>
-        <p style="color: #94a3b8;">Portfolio Infrastructure Project</p>
-        <hr style="border-color: #334155;">
-        <div class="ip-box">
-            <strong>Active Instance ID:</strong> <code><?php echo htmlspecialchars(trim($instance_id)); ?></code><br>
-            <strong>Private IP Address:</strong> <code><?php echo htmlspecialchars(trim($local_ip)); ?></code>
+    <div class="container">
+        <div class="card">
+            <h1>AWS Scalability Demo</h1>
+            <p style="color: #94a3b8;">Portfolio Infrastructure Project</p>
+            <hr style="border-color: #334155;">
+            <div class="ip-box">
+                <strong>Active Instance ID:</strong> <code><?php echo htmlspecialchars(trim($instance_id)); ?></code><br>
+                <strong>Private IP Address:</strong> <code><?php echo htmlspecialchars(trim($local_ip)); ?></code>
+            </div>
+            <form method="post">
+                <button type="submit" name="stress" class="btn">Trigger CPU Stress Test</button>
+            </form>
+            <?php if (isset($message)) { echo "<div class='alert'>$message</div>"; } ?>
         </div>
-        <form method="post">
-            <button type="submit" name="stress" class="btn">Trigger CPU Stress Test</button>
-        </form>
-        <?php if (isset($message)) { echo "<div class='alert'>$message</div>"; } ?>
+
+        <div class="dashboard-panel">
+            <div class="dashboard-title">Live Cluster Metrics (Real-Time)</div>
+            <iframe src="https://cloudwatch.amazonaws.com/dashboard.html?dashboard=Portfolio-Scalability-Metrics&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTA2NDMxODgxMjI3NSIsIlUiOiJ1cy1lYXN0LTFfZ1R5QzlOV3JRIiwiQyI6Ijdma2Z1NDViYWdwYWFmajFubjgzdG4xOXQ4IiwiSSI6InVzLWVhc3QtMTozOTJlNTkwOC1mY2Q0LTQ4MWMtYjE0MS1iMDhhM2Y2MTU3YjUiLCJPIjoiYXJuOmF3czppYW06OjA2NDMxODgxMjI3NTpyb2xlL3NlcnZpY2Utcm9sZS9DV0RCU2hhcmluZy1QdWJsaWNSZWFkT25seUFjY2Vzcy04WUpQT0pZWiIsIk0iOiJQdWJsaWMifQ==&start=PT3H&end=null"></iframe>
+        </div>
     </div>
 </body>
 </html>
