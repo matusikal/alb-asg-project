@@ -2,4 +2,5 @@
 **/terraform/.terraform/
 **/.terraform/
 .terraform/
+.terraform/*
 ec2config.txt
