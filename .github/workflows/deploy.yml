@@ -20,7 +20,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::064318812275:role/github-albelb-insert
-          aws-region: us-east-1 # Change to your preferred AWS region
+          aws-region: eu-central-1 # Change to your preferred AWS region
           audience: sts.amazonaws.com
 
       - name: Sync Files to S3
