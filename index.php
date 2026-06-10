@@ -56,7 +56,7 @@ if (isset($_POST['stress'])) {
         code { background: #0f172a; padding: 2px 6px; border-radius: 4px; color: #f43f5e; font-family: monospace; }
         
         /* 📈 Custom Dashboard Layout Styles */
-        .dashboard-panel { background: #1e293b; width: 100%; max-width: 950px; border-radius: 12px; padding: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
+        .dashboard-panel { background: #1e293b; width: 100%; max-width: 1250px; border-radius: 12px; padding: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
         .dashboard-title { color: #38bdf8; text-align: left; margin-bottom: 15px; font-size: 1.2rem; font-weight: bold; }
         iframe { width: 100%; height: 500px; border: none; border-radius: 8px; background: #111; }
     </style>
