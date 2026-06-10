@@ -62,7 +62,7 @@ if (isset($_POST['stress'])) {
         <hr style="border-color: #334155;">
         <div class="ip-box">
             <strong>Active Instance ID:</strong> <code><?php echo htmlspecialchars(trim($instance_id)); ?></code><br>
-            <strong>prywatny ip adres:</strong> <code><?php echo htmlspecialchars(trim($local_ip)); ?></code>
+            <strong>Private IP Address:</strong> <code><?php echo htmlspecialchars(trim($local_ip)); ?></code>
         </div>
         <form method="post">
             <button type="submit" name="stress" class="btn">Trigger CPU Stress Test</button>
