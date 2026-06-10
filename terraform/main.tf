@@ -10,14 +10,13 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-central-1"
+  region = var.aws_region
 }
 
 resource "aws_s3_bucket" "bucket" {
-  bucket = "my-unique-bucket-name-123456"
+  bucket = var.bucket_name
 
   tags = {
-    Name        = "my-bucket"
-    Environment = "dev"
+    Name = var.bucket_name
   }
 }
