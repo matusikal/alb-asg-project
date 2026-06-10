@@ -1,7 +1,7 @@
-# Ignore the terraform folder and its contents anywhere in the project
-terraform/.terraform/*
-.terraform/*
-ec2config.txt
-terraform/terraform.tfstate
+# Ignore ec2 config file and terraform state files
 terraform/terraform.tfstate.backup
 terraform/.terraform.lock.hcl
+terraform/terraform.tfstate
+terraform/.terraform/*
+ec2config.txt
+.terraform/*
