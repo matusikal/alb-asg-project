@@ -1,7 +1,18 @@
-# alb-asg-project
+# AWS High-Availability Web Stack
+
+A production-pattern web stack on AWS demonstrating multi-AZ high availability, least-privilege IAM design, and keyless CI/CD via GitHub OIDC.
+
+Live at: `https://project2.aleksandermatusik.xyz`
+
+
+## Architecture
+
+### Traffic flow
+
+
 ```mermaid
 graph TD
-    Internet([internet · subdomain.example.com]) --> ALB
+    Internet([internet · project2.aleksandermatusik.xyz]) --> ALB
     ACM[ACM cert\nTLS for subdomain] -.->|attached| ALB
 
     ALB[ALB\nHTTP → HTTPS redirect]
@@ -29,6 +40,8 @@ graph TD
     ALB -.->|metrics| CW[CloudWatch\ndashboard on site]
 ```
 
+### CI/CD and deployment flow
+
 ```mermaid
 graph LR
     GHA[GitHub Actions\nOIDC — no static keys] -->|assume| DeployRole[IAM deploy role\ns3:PutObject only]
@@ -38,3 +51,58 @@ graph LR
     Cron[EC2 cron job\npolls S3] -->|check| S3
     S3 -->|sync| WebRoot[aws s3 sync\nupdate web root]
 ```
+
+
+## How it works
+
+Site under my domain, big button that simulates real world traffic (by using stress command on an ec2 instance). ASG automatically boots up other instances and ALB distributes traffic across multiple AZ's.
+Content is deployed by pushing `index.php` to an S3 bucket via GitHub Actions. Each EC2 instance runs a cron job that periodically checks the bucket for changes and syncs the file to the web root using `aws s3 sync`. No deployment agent, no push credentials on the instances.
+
+---
+
+## Architecture decisions
+
+**No CloudFront.** CloudFront would cache content at the edge and hide the multi-AZ load balancing behavior this project is designed to demonstrate. Watching the server IP rotate across availability zones on refresh is the point.
+
+**Cron job over event-driven deployment.** S3 event notifications to SNS to Lambda would be more reactive but adds infrastructure complexity and cost for a project that deploys infrequently. A cron poll costs fractions of a cent (S3 `ListObjects` at $0.005/1000 requests, `GetObject` only fires on change) and keeps the deployment path simple and stateless.
+
+**OIDC instead of static IAM keys.** GitHub Actions assumes an IAM role via OpenID Connect. No long-lived credentials are stored in GitHub secrets, and the role can only be assumed by this specific repository and workflow.
+
+**Traffic locked to ALB.** EC2 security groups accept inbound traffic only from the ALB security group — not from the public internet directly. This means the ALB is the sole entry point and its HTTP→HTTPS redirect cannot be bypassed.
+
+---
+
+## Services used
+
+| Service | Role |
+|---|---|
+| EC2 + Launch Template | Web servers, cron-based deployment |
+| Auto Scaling Group | Scales instances 1–3 based on demand |
+| Application Load Balancer | Multi-AZ traffic distribution, HTTP→HTTPS redirect |
+| ACM | TLS certificate for custom subdomain |
+| S3 | Deployment artifact store |
+| IAM | Least-privilege roles for EC2, ASG, and CI/CD |
+| CloudWatch | Metrics dashboard embedded on the site |
+| GitHub Actions (OIDC) | Keyless CI/CD pipeline |
+
+---
+
+## CI/CD pipeline
+
+On every push to `main`:
+
+1. GitHub Actions requests a short-lived token from AWS via OIDC
+2. The token is exchanged for temporary credentials by assuming the deploy IAM role
+3. `index.php` is uploaded to the S3 deployment bucket
+4. Each EC2 instance's cron job detects the change on its next run and syncs the file to the web root
+
+No secrets are stored in GitHub. The IAM role trust policy restricts assumption to this repository and branch.
+
+---
+
+## What I'd add next
+
+- **WAF** in front of the ALB for rate limiting and basic rule-based filtering
+- **RDS Multi-AZ** if the project needed a database layer
+- **ElastiCache** for session or query caching
+- **S3 event notifications** to replace the cron job if deployment frequency increased significantly
