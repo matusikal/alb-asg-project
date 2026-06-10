@@ -43,7 +43,7 @@ if (isset($_POST['stress'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AWS Auto Scaling & ELB Demo</title>
+    <title>AWS Auto Scaling & ALB Demo</title>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #0f172a; color: #f8fafc; text-align: center; padding: 50px; }
         .card { background: #1e293b; padding: 40px; border-radius: 12px; display: inline-block; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); max-width: 500px; text-align: center; }
@@ -61,8 +61,8 @@ if (isset($_POST['stress'])) {
         <p style="color: #94a3b8;">Portfolio Infrastructure Project</p>
         <hr style="border-color: #334155;">
         <div class="ip-box">
-            <strong>📍 Active Instance ID:</strong> <code><?php echo htmlspecialchars(trim($instance_id)); ?></code><br>
-            <strong>🔌 Private IP Address:</strong> <code><?php echo htmlspecialchars(trim($local_ip)); ?></code>
+            <strong>Active Instance ID:</strong> <code><?php echo htmlspecialchars(trim($instance_id)); ?></code><br>
+            <strong>Private IP Address:</strong> <code><?php echo htmlspecialchars(trim($local_ip)); ?></code>
         </div>
         <form method="post">
             <button type="submit" name="stress" class="btn">Trigger CPU Stress Test</button>
