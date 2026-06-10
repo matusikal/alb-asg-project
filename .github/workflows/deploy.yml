@@ -3,11 +3,11 @@ name: Deploy Application to S3
 on:
   push:
     branches:
-      - main # Triggers the pipeline when you push to main
+      - main 
 
 permissions:
-  id-token: write # Required for requesting the JWT OIDC token
-  contents: read  # Required for actions/checkout
+  id-token: write 
+  contents: read  
 
 jobs:
   deploy:
@@ -20,7 +20,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::064318812275:role/github-albelb-insert
-          aws-region: eu-central-1 # Change to your preferred AWS region
+          aws-region: eu-central-1
           audience: sts.amazonaws.com
 
       - name: Sync Files to S3

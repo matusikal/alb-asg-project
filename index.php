@@ -1,5 +1,4 @@
 <?php
-// Securely fetch IMDSv2 Token for AWS Metadata
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, "http://169.254.169.254/latest/api/token");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -7,31 +6,22 @@ curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
 curl_setopt($ch, CURLOPT_HTTPHEADER, array("X-aws-ec2-metadata-token-ttl-seconds: 21600"));
 $token = curl_exec($ch);
 curl_close($ch);
-
-// Fetch Instance ID
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, "http://169.254.169.254/latest/meta-data/instance-id");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array("X-aws-ec2-metadata-token: $token"));
 $instance_id = curl_exec($ch);
 curl_close($ch);
-
-// Fetch Private IP Address
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, "http://169.254.169.254/latest/meta-data/local-ipv4");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array("X-aws-ec2-metadata-token: $token"));
 $local_ip = curl_exec($ch);
 curl_close($ch);
-
-// Handle the CPU Stress Test simulation
 if (isset($_POST['stress'])) {
-    // Check if stress is already running to prevent locking up the server entirely
     $already_running = shell_exec('pgrep -x stress');
     
     if (empty($already_running)) {
-        // '$(nproc)' dynamically gets the number of CPU cores on the instance
-        // '--timeout 600' automatically stops the load test after 10 minutes
         shell_exec('stress --cpu $(nproc) --timeout 600 > /dev/null 2>&1 &');
         $message = "CPU Stress test initiated across all available cores! The site will be a bit slow, but it will remain alive while Auto Scaling boots up a new instance. Refresh in 2-3 minutes.";
     } else {
