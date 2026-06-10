@@ -28,3 +28,13 @@ graph TD
 
     ALB -.->|metrics| CW[CloudWatch\ndashboard on site]
 ```
+
+```mermaid
+graph LR
+    GHA[GitHub Actions\nOIDC — no static keys] -->|assume| DeployRole[IAM deploy role\ns3:PutObject only]
+    DeployRole -->|upload| S3[(S3 · index.php)]
+
+    EC2Role[EC2 instance role\ns3:GetObject only] -.->|used by| Cron
+    Cron[EC2 cron job\npolls S3] -->|check| S3
+    S3 -->|sync| WebRoot[aws s3 sync\nupdate web root]
+```
