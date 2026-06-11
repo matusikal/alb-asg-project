@@ -6,6 +6,8 @@ Live at: `https://project2.aleksandermatusik.xyz`
 
 **Update 11.06.26** I decided to tear down the app and rebuild it with terraform mainly because of load balancing cost. Passive it still takes roughly 18$ a month without any traffic, not on my watch. If requested I can boot it up quickly.
 
+**Update 11.06.26** I added modular terraform units for my project, only s3 works but I hope that tomorrow I'll finish this project.
+
 ## Architecture
 
 ### Traffic flow
