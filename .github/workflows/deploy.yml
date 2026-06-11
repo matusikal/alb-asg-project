@@ -25,4 +25,4 @@ jobs:
 
       - name: Sync Files to S3
         run: |
-          aws s3 sync . s3://my-portfolio-scalability-app-code --exclude ".git*"
+          aws s3 sync . s3://my-portfolio-scalability-app-code --exclude ".git*", "terraform*"
