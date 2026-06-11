@@ -1,1 +1,2 @@
-bucket_name = "tojestmojazaga-1233333"
+root_bucket_name = "my-portfolio-scalability-app-code"
+root_environment = "demo"

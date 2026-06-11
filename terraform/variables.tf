@@ -1,8 +1,7 @@
-variable "aws_region" {
-  type    = string
-  default = "eu-central-1"
+variable "root_bucket_name" {
+  type = string
 }
 
-variable "bucket_name" {
+variable "root_environment" {
   type = string
 }
