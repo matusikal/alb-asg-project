@@ -4,6 +4,7 @@ A production-pattern web stack on AWS demonstrating multi-AZ high availability, 
 
 Live at: `https://project2.aleksandermatusik.xyz`
 
+**Update 11.06.26** I decided to tear down the app and rebuild it with terraform mainly because of load balancing cost. Passive it still takes roughly 18$ a month without any traffic, not on my watch. If requested I can boot it up quickly.
 
 ## Architecture
 
