@@ -8,7 +8,7 @@ Live at: `EMAIL ME FOR A DEMO`
 
 **Update 11.06.26** I added modular terraform units for my project, only s3 works but I hope that tomorrow I'll finish this project.
 
-**Update 16.06.26** Well it took me a little bit longer than expected, but here it is, complete working site. The only thing I have to do manually is make a dashboard and then push it to the site, as well as changing the dns records on namecheap.com and changing from t3.nano to t3.medium for faster deployment.
+**Update 16.06.26** Well it took me a little bit longer than expected, but here it is, complete working site. The only thing I have to do manually, is make a dashboard and then push it to the site, as well as changing the dns records on namecheap.com. Also changed from t3.nano to t3.medium for faster deployment.
 
 ## Architecture
 
@@ -69,6 +69,7 @@ After some time panel from cloudwatch shows number of instance running and cpu u
 ## Architecture decisions
 
 ~~**t3.nano used** For maximum cost savings I used the cheapest option available on aws. It gets the job done and for the whole month of running it costs only 4$. I thought about spot instances but do not want random interruptions as well as reserved savings plan, if I ever need to clear this project.~~
+**t3.medium used** after tearing down the site so I can rebuild it with terraform I came to the conclussion that I can use better machine for faster deployment.
 
 **No CloudFront.** CloudFront would cache content at the edge and hide the multi-AZ load balancing behavior this project is designed to demonstrate. Watching the server IP rotate across availability zones on refresh is the point.
 
@@ -87,7 +88,7 @@ After some time panel from cloudwatch shows number of instance running and cpu u
 | Service | Role |
 |---|---|
 | EC2 + Launch Template | Web servers, cron-based deployment |
-| Auto Scaling Group | Scales instances 1–3 based on demand |
+| Auto Scaling Group | Scales instances 1–2 based on demand |
 | Application Load Balancer | Multi-AZ traffic distribution, HTTP→HTTPS redirect |
 | ACM | TLS certificate for custom subdomain |
 | S3 | Deployment artifact store |
@@ -114,11 +115,16 @@ No secrets are stored in GitHub. The IAM role trust policy restricts assumption 
 - EC2 Instance wasn't taking any files from s3, quick look and I forgot about adding IAM permissions into the EC2 startup configuration.
 - When I finished this project I thought about hosting it under my main domain and with that have ssl certificate, i had to change inbound SG rules and redirect all http trafiic onto the https.
 - My first project is my main site, for convenience i was operating in us-east-1 so the acm certificate was only there. I requested new certificate *.aleksandermatusik.xyz for easier future deployment, added it to namecheap dns records and voila.
+- ALB was costing me too much for my liking. I decided to tear down whole site and rebuild it fast when recruiter asks for it.
+- Big problems while building whole site from code, had to learn structure, how variables are talking to each other, how to output something so I can recall it later in another function, made it modular so I can scale it whenever I want.
+- Most of the problems were caused by incorrect settings that I have copied wrong. For more understanding I was copying code manually so sometimes I wrote false instead of true. That meant funny mistakes such as  associate_public_ip_address = false instead of true. Then debugging for an hour, why do I have 502 bad gateway? We live we learn
+- Debugging was quite easy because I was operating module by module. If my vpc wasn't working I'd fix it before I started working on SG's etc.
 
 ---
 ## What I'd add next
 
+- **Add variables to terraform** adding terraform.tfvars so SG names, number of min or max instnaces can be customized etc.
 - **RDS Multi-AZ** if the project needed a database layer
 - **ElastiCache** for session or query caching
 - **S3 event notifications** to replace the cron job if deployment frequency increased significantly
-- **Terraform and CodeDeploy**
+- **Add IAM to terraform**
