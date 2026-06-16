@@ -12,4 +12,3 @@ variable "filename_root" {
   type        = string
   default     = "index.php"
 }
-
