@@ -17,7 +17,7 @@ variable "ami_id" {
 variable "instance_type" {
   type        = string
   description = "The size of the instance"
-  default     = "t3.medium"
+  default     = "t3.nano"
 }
 variable "public_subnet_ids" {
   type        = list(string)

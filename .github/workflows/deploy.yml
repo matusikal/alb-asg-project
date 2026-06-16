@@ -22,7 +22,7 @@ jobs:
           role-to-assume: arn:aws:iam::064318812275:role/github-albelb-insert
           aws-region: eu-central-1
           audience: sts.amazonaws.com
-#
-#      - name: Sync Files to S3
-#        run: |
-#          aws s3 sync . s3://my-portfolio-scalability-app-code --exclude ".git*" --exclude "terraform*" --exclude "README.md"
+
+      - name: Sync Files to S3
+        run: |
+          aws s3 sync . s3://my-portfolio-scalability-app-code --exclude ".git*" --exclude "terraform*" --exclude "README.md"

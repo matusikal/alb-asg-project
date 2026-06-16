@@ -29,7 +29,7 @@ resource "aws_launch_template" "app_lt" {
 resource "aws_autoscaling_group" "app_asg" {
   name_prefix         = "app-asg-"
   desired_capacity    = 1
-  max_size            = 2
+  max_size            = 3
   min_size            = 1
   vpc_zone_identifier = var.public_subnet_ids
 
@@ -55,5 +55,19 @@ resource "aws_autoscaling_group" "app_asg" {
     key                 = "Name"
     value               = "asg-app-server"
     propagate_at_launch = true
+  }
+}
+
+resource "aws_autoscaling_policy" "cpu_tracking" {
+  name                   = "cpu-tracking"
+  policy_type           = "TargetTrackingScaling"
+  autoscaling_group_name = aws_autoscaling_group.app_asg.id
+
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+
+    target_value = 40.0
   }
 }
