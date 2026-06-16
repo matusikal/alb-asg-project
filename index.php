@@ -130,7 +130,7 @@ $uptime = trim(shell_exec("uptime -p"));
         .footer {
             text-align: center;
             margin-top: 25px;
-            color: #695656;
+            color: #666;
         }
 
         .load-high {

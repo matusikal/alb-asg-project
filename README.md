@@ -83,6 +83,7 @@ After some time panel from cloudwatch shows number of instance running and cpu u
 
 **No WAF** As there is already function that limits ASG usage I decided not to incorporate WAF into my project.
 
+
 ---
 
 ## Services used
@@ -130,3 +131,4 @@ No secrets are stored in GitHub. The IAM role trust policy restricts assumption 
 - **ElastiCache** for session or query caching
 - **S3 event notifications** to replace the cron job if deployment frequency increased significantly
 - **Add IAM to terraform**
+- **Shell exec** is probably not the best function to call inside my php code.
