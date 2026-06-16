@@ -8,7 +8,7 @@ Live at: `EMAIL ME FOR A DEMO`
 
 **Update 11.06.26** I added modular terraform units for my project, only s3 works but I hope that tomorrow I'll finish this project.
 
-**Update 16.06.26** Well it took me a little bit longer than expected, but here it is, complete working site. The only thing I have to do manually, is make a dashboard and then push it to the site, as well as changing the dns records on namecheap.com. Also changed from t3.nano to t3.medium for faster deployment.
+**Update 16.06.26** Well it took me a little bit longer than expected, but here it is, complete working site. The only thing I have to do manually, is make a dashboard and then push it to the site, as well as changing the dns records on namecheap.com. 
 
 ## Architecture
 
@@ -69,7 +69,9 @@ After some time panel from cloudwatch shows number of instance running and cpu u
 ## Architecture decisions
 
 ~~**t3.nano used** For maximum cost savings I used the cheapest option available on aws. It gets the job done and for the whole month of running it costs only 4$. I thought about spot instances but do not want random interruptions as well as reserved savings plan, if I ever need to clear this project.~~
-**t3.medium used** after tearing down the site so I can rebuild it with terraform I came to the conclussion that I can use better machine for faster deployment.
+~~**t3.medium used** after tearing down the site so I can rebuild it with terraform I came to the conclussion that I can use better machine for faster deployment.~~
+
+**back to t3.nano** because of burstable power of t3 medium I decided to go back to t3.nano. I also tried using c5.large but the site wasnt't working. Forgot to actually add autoscalling policy, now it's working perfectly, I'm leaving t3.nano alone.
 
 **No CloudFront.** CloudFront would cache content at the edge and hide the multi-AZ load balancing behavior this project is designed to demonstrate. Watching the server IP rotate across availability zones on refresh is the point.
 
@@ -111,7 +113,7 @@ No secrets are stored in GitHub. The IAM role trust policy restricts assumption 
 
 ---
 ## Problems I encountered
-- Thought about cheapest options possible - built whole site on t2.nano (as it was on the top of the list), then changed it to t3.nano for 0.0007$ per hour savings
+- Thought about cheapest options possible - built whole site on t3.nano (as it was on the top of the list), then changed it to t3.nano for 0.0007$ per hour savings
 - EC2 Instance wasn't taking any files from s3, quick look and I forgot about adding IAM permissions into the EC2 startup configuration.
 - When I finished this project I thought about hosting it under my main domain and with that have ssl certificate, i had to change inbound SG rules and redirect all http trafiic onto the https.
 - My first project is my main site, for convenience i was operating in us-east-1 so the acm certificate was only there. I requested new certificate *.aleksandermatusik.xyz for easier future deployment, added it to namecheap dns records and voila.
