@@ -67,10 +67,6 @@ if (isset($_POST['stress'])) {
             <?php if (isset($message)) { echo "<div class='alert'>$message</div>"; } ?>
         </div>
 
-        <div class="dashboard-panel">
-            <div class="dashboard-title">Live Cluster Metrics (Real-Time)</div>
-            <iframe src="https://cloudwatch.amazonaws.com/dashboard.html?dashboard=Portfolio-Scalability-Metrics&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTA2NDMxODgxMjI3NSIsIlUiOiJ1cy1lYXN0LTFfZ1R5QzlOV3JRIiwiQyI6Ijdma2Z1NDViYWdwYWFmajFubjgzdG4xOXQ4IiwiSSI6InVzLWVhc3QtMTozOTJlNTkwOC1mY2Q0LTQ4MWMtYjE0MS1iMDhhM2Y2MTU3YjUiLCJPIjoiYXJuOmF3czppYW06OjA2NDMxODgxMjI3NTpyb2xlL3NlcnZpY2Utcm9sZS9DV0RCU2hhcmluZy1QdWJsaWNSZWFkT25seUFjY2Vzcy04WUpQT0pZWiIsIk0iOiJQdWJsaWMifQ==&start=PT3H&end=null"></iframe>
-        </div>
     </div>
 </body>
 </html>

@@ -2,11 +2,13 @@
 
 A production-pattern web stack on AWS demonstrating multi-AZ high availability, least-privilege IAM design, and keyless CI/CD via GitHub OIDC.
 
-Live at: `https://project2.aleksandermatusik.xyz`
+Live at: `EMAIL ME FOR A DEMO`
 
 **Update 11.06.26** I decided to tear down the app and rebuild it with terraform mainly because of load balancing cost. Passive it still takes roughly 18$ a month without any traffic, not on my watch. If requested I can boot it up quickly.
 
 **Update 11.06.26** I added modular terraform units for my project, only s3 works but I hope that tomorrow I'll finish this project.
+
+**Update 16.06.26** Well it took me a little bit longer than expected, but here it is, complete working site. The only thing I have to do manually is make a dashboard and then push it to the site, as well as changing the dns records on namecheap.com and changing from t3.nano to t3.medium for faster deployment.
 
 ## Architecture
 
@@ -66,7 +68,7 @@ After some time panel from cloudwatch shows number of instance running and cpu u
 
 ## Architecture decisions
 
-**t3.nano used** For maximum cost savings I used the cheapest option available on aws. It gets the job done and for the whole month of running it costs only 4$. I thought about spot instances but do not want random interruptions as well as reserved savings plan, if I ever need to clear this project.
+~~**t3.nano used** For maximum cost savings I used the cheapest option available on aws. It gets the job done and for the whole month of running it costs only 4$. I thought about spot instances but do not want random interruptions as well as reserved savings plan, if I ever need to clear this project.~~
 
 **No CloudFront.** CloudFront would cache content at the edge and hide the multi-AZ load balancing behavior this project is designed to demonstrate. Watching the server IP rotate across availability zones on refresh is the point.
 
