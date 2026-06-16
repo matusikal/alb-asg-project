@@ -3,18 +3,15 @@ resource "aws_launch_template" "app_lt" {
   image_id      = var.ami_id
   instance_type = var.instance_type
 
-  # Attach your pre-existing IAM Role via its Instance Profile
   iam_instance_profile {
     name = var.iam_instance_profile_name
   }
 
-  # Network configuration (Attaches the app/instance security group)
   network_interfaces {
-    associate_public_ip_address = true # Keep instances private if desired, or true if needed
+    associate_public_ip_address = true
     security_groups             = [var.instance_sg_id]
   }
 
-  # Optional: Adds a basic user data script to test web traffic
   user_data = filebase64("${path.module}/ec2config.sh")
 
   tag_specifications {
@@ -29,30 +26,23 @@ resource "aws_launch_template" "app_lt" {
   }
 }
 
-# Existing aws_launch_template.app_lt stays above...
-
-# NEW: Auto Scaling Group
 resource "aws_autoscaling_group" "app_asg" {
   name_prefix         = "app-asg-"
   desired_capacity    = 1
   max_size            = 2
   min_size            = 1
-  vpc_zone_identifier = var.public_subnet_ids # Spreads instances across both subnets
+  vpc_zone_identifier = var.public_subnet_ids
 
-  # Link to your Launch Template
   launch_template {
     id      = aws_launch_template.app_lt.id
-    version = "$Latest" # Automatically uses the newest version of the template
+    version = "$Latest" 
   }
 
-  # Link to your ALB Target Group
   target_group_arns = [var.target_group_arn]
 
-  # Use ALB health checks instead of basic EC2 instance status checks
   health_check_type         = "ELB"
-  health_check_grace_period = 300 # Gives instances 5 minutes to run userdata.sh before checking health
+  health_check_grace_period = 300
 
-  # Enforce instances to replace cleanly when the launch template updates
   instance_refresh {
     strategy = "Rolling"
     preferences {
@@ -64,6 +54,6 @@ resource "aws_autoscaling_group" "app_asg" {
   tag {
     key                 = "Name"
     value               = "asg-app-server"
-    propagate_at_launch = true # This makes sure instances get tagged
+    propagate_at_launch = true
   }
 }

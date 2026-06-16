@@ -11,7 +11,7 @@ variable "iam_instance_profile_name" {
 variable "ami_id" {
   type        = string
   description = "The AMI ID to use for the instances"
-  default     = "ami-09f224bab7225d943" # Example: Amazon Linux 2023 in us-east-1
+  default     = "ami-09f224bab7225d943"
 }
 
 variable "instance_type" {
